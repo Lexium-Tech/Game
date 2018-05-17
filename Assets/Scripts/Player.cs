@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// I can use cool features too
+[RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
 
@@ -21,6 +23,12 @@ public class Player : MonoBehaviour
     // Camera movement speed
     public float speedH = 2.0f;
     public float speedV = 2.0f;
+
+    // Used for jumping. If the player is on the ground
+    private bool isGrounded;
+
+    // The force of the jump
+    public float jumpForce = 2.0f;
 
     // Called when class instance is called
     void Start()
@@ -58,5 +66,20 @@ public class Player : MonoBehaviour
 
         // Make player rotate with the mouse
         transform.eulerAngles = cam.transform.eulerAngles;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rb.velocity = Vector3.up * jumpForce;
+        }
     }
+
+
+    /*
+     * When the object holds to the ground, we set that it is grounded 
+     */
+    void OnCollisionStay()
+    {
+        isGrounded = true;
+    }
+
 }
