@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
 
     // Player rigidbody
     private Rigidbody rb;
@@ -22,10 +23,10 @@ public class Player : MonoBehaviour {
     public float speedV = 2.0f;
 
     // Called when class instance is called
-    void Start ()
+    void Start()
     {
         rb = GetComponent<Rigidbody>();
-	}
+    }
 
     // Constant update, fixed timer
     void FixedUpdate()
@@ -39,19 +40,21 @@ public class Player : MonoBehaviour {
         cam.transform.eulerAngles = camMovement;
 
 
-        if(Input.GetKeyDown(KeyCode.W))
-        {
-            Vector3 playerMove = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
-            rb.velocity = playerMove * speed;
-        }
-
         // Get movement input
-        // float moveHorizontal = Input.GetAxis("Horizontal");
-        //  float moveVertical = Input.GetAxis("Vertical");
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
-        //  Vector3 movement = new Vector3(moveHorizontal, 0.0f,moveVertical);
+        /*
+         * First, we get the movement input, next, we set the direction
+         * to https://docs.unity3d.com/ScriptReference/Transform.TransformDirection.html.
+         * Set y to 0 so he cant uh, fly lol
+         */
+        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+        movement = cam.transform.TransformDirection(movement);
+        movement.y = 0.0f;
 
         // Update player
+        rb.velocity = movement * speed;
 
         // Make player rotate with the mouse
         transform.eulerAngles = cam.transform.eulerAngles;
